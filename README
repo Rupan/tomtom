@@ -1,3 +1,16 @@
+Intro:
+
+The tools here are for use with TomTom devices.  At the moment,
+they can deconstruct and rebuild the ttsystem images which
+contain the linux kernel and root filesystem used on TomTom
+devices.
+
+It appears that there are issues on big-endian hardware currently.
+
+------------------------------------------------------------------
+
+Licensing:
+
 The MD5 code in lib/ was obtained here:
   http://www.fourmilab.ch/md5/
 Its license is public domain.

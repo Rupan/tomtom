@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -53,7 +54,7 @@ static int dump_to_file(const char *pathprefix, void *start, int len)
 
 static int extract(const char *pathname, int dump)
 {
-	int fd, ret;
+	int fd, ret = -1;
 	struct stat st;
 	void *mem;
 

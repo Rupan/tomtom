@@ -76,7 +76,7 @@ char *readfile(char *name, unsigned int size)
   }
   buf = (char *)malloc(size);
   if (!buf) {
-	  fprintf(stderr, "error while malloc(%ld)\n", size);
+	  fprintf(stderr, "error while malloc(%u)\n", size);
 	  fclose(f);
 	  exit(1);
   }
@@ -89,7 +89,7 @@ char *readfile(char *name, unsigned int size)
   return buf;
 }
 
-void sign(char *buf, unsigned int size, char *sig)
+void sign(char *buf, unsigned int size, unsigned char *sig)
 {
   struct MD5Context md5;
   BLOWFISH_CTX bf;
