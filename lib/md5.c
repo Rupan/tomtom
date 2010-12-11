@@ -19,7 +19,7 @@
    prototypes) to maintain the tradition that Netfone will compile
    with Sun's original "cc". */
 
-#include <memory.h>		 /* for memcpy() */
+#include <string.h>		 /* for memcpy() */
 #include "md5.h"
 
 #ifndef HIGHFIRST
@@ -29,13 +29,13 @@
  * Note: this code is harmless on little-endian machines.
  */
 void byteReverse(buf, longs)
-    unsigned char *buf; unsigned longs;
+    uint8_t *buf; uint32_t longs;
 {
-    uint32 t;
+    uint32_t t;
     do {
-	t = (uint32) ((unsigned) buf[3] << 8 | buf[2]) << 16 |
-	    ((unsigned) buf[1] << 8 | buf[0]);
-	*(uint32 *) buf = t;
+	t = (uint32_t) ((uint32_t) buf[3] << 8 | buf[2]) << 16 |
+	    ((uint32_t) buf[1] << 8 | buf[0]);
+	*(uint32_t *) buf = t;
 	buf += 4;
     } while (--longs);
 }
@@ -62,14 +62,14 @@ void MD5Init(ctx)
  * of bytes.
  */
 void MD5Update(ctx, buf, len)
-    struct MD5Context *ctx; unsigned char *buf; unsigned len;
+    struct MD5Context *ctx; uint8_t *buf; uint32_t len;
 {
-    uint32 t;
+    uint32_t t;
 
     /* Update bitcount */
 
     t = ctx->bits[0];
-    if ((ctx->bits[0] = t + ((uint32) len << 3)) < t)
+    if ((ctx->bits[0] = t + ((uint32_t) len << 3)) < t)
 	ctx->bits[1]++; 	/* Carry from low to high */
     ctx->bits[1] += len >> 29;
 
@@ -78,7 +78,7 @@ void MD5Update(ctx, buf, len)
     /* Handle any leading odd-sized chunks */
 
     if (t) {
-	unsigned char *p = (unsigned char *) ctx->in + t;
+	uint8_t *p = (uint8_t *) ctx->in + t;
 
 	t = 64 - t;
 	if (len < t) {
@@ -87,7 +87,7 @@ void MD5Update(ctx, buf, len)
 	}
 	memcpy(p, buf, t);
 	byteReverse(ctx->in, 16);
-	MD5Transform(ctx->buf, (uint32 *) ctx->in);
+	MD5Transform(ctx->buf, (uint32_t *) ctx->in);
 	buf += t;
 	len -= t;
     }
@@ -96,7 +96,7 @@ void MD5Update(ctx, buf, len)
     while (len >= 64) {
 	memcpy(ctx->in, buf, 64);
 	byteReverse(ctx->in, 16);
-	MD5Transform(ctx->buf, (uint32 *) ctx->in);
+	MD5Transform(ctx->buf, (uint32_t *) ctx->in);
 	buf += 64;
 	len -= 64;
     }
@@ -111,10 +111,10 @@ void MD5Update(ctx, buf, len)
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
 void MD5Final(digest, ctx)
-    unsigned char digest[16]; struct MD5Context *ctx;
+    uint8_t digest[16]; struct MD5Context *ctx;
 {
-    unsigned count;
-    unsigned char *p;
+    uint32_t count;
+    uint8_t *p;
 
     /* Compute number of bytes mod 64 */
     count = (ctx->bits[0] >> 3) & 0x3F;
@@ -132,7 +132,7 @@ void MD5Final(digest, ctx)
 	/* Two lots of padding:  Pad the first block to 64 bytes */
 	memset(p, 0, count);
 	byteReverse(ctx->in, 16);
-	MD5Transform(ctx->buf, (uint32 *) ctx->in);
+	MD5Transform(ctx->buf, (uint32_t *) ctx->in);
 
 	/* Now fill the next block with 56 bytes */
 	memset(ctx->in, 0, 56);
@@ -143,11 +143,11 @@ void MD5Final(digest, ctx)
     byteReverse(ctx->in, 14);
 
     /* Append length in bits and transform */
-    ((uint32 *) ctx->in)[14] = ctx->bits[0];
-    ((uint32 *) ctx->in)[15] = ctx->bits[1];
+    ((uint32_t *) ctx->in)[14] = ctx->bits[0];
+    ((uint32_t *) ctx->in)[15] = ctx->bits[1];
 
-    MD5Transform(ctx->buf, (uint32 *) ctx->in);
-    byteReverse((unsigned char *) ctx->buf, 4);
+    MD5Transform(ctx->buf, (uint32_t *) ctx->in);
+    byteReverse((uint8_t *) ctx->buf, 4);
     memcpy(digest, ctx->buf, 16);
     memset(ctx, 0, sizeof(ctx));        /* In case it's sensitive */
 }
@@ -171,9 +171,9 @@ void MD5Final(digest, ctx)
  * the data and converts bytes into longwords for this routine.
  */
 void MD5Transform(buf, in)
-    uint32 buf[4]; uint32 in[16];
+    uint32_t buf[4]; uint32_t in[16];
 {
-    register uint32 a, b, c, d;
+    register uint32_t a, b, c, d;
 
     a = buf[0];
     b = buf[1];

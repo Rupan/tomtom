@@ -16,25 +16,17 @@
     insures we work on new platforms regardless of their byte
     order.  */
 
+#include <inttypes.h>
+#include <endian.h>
+
+#if BYTE_ORDER == BIG_ENDIAN
 #define HIGHFIRST
-
-#ifdef __i386__
-#undef HIGHFIRST
-#endif
-
-/*  On machines where "long" is 64 bits, we need to declare
-    uint32 as something guaranteed to be 32 bits.  */
-
-#ifdef __alpha
-typedef unsigned int uint32;
-#else
-typedef unsigned long uint32;
 #endif
 
 struct MD5Context {
-        uint32 buf[4];
-        uint32 bits[2];
-        unsigned char in[64];
+        uint32_t buf[4];
+        uint32_t bits[2];
+        uint8_t in[64];
 };
 
 extern void MD5Init();
@@ -48,7 +40,7 @@ extern void MD5Transform();
 typedef struct MD5Context MD5_CTX;
 
 /*  Define CHECK_HARDWARE_PROPERTIES to have main,c verify
-    byte order and uint32 settings.  */
+    byte order and uint32_t settings.  */
 #define CHECK_HARDWARE_PROPERTIES
 
 #endif /* !MD5_H */
