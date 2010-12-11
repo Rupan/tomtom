@@ -1,0 +1,17 @@
+The MD5 code in lib/ was obtained here:
+  http://www.fourmilab.ch/md5/
+Its license is public domain.
+
+The Blowfish code in lib/ was obtained here:
+  http://www.schneier.com/blowfish-download.html
+The implementation is by Paul Kocher and its license is LGPL.
+This code has been modified to work correctly on 64-bit platforms.
+
+mkttimage.c was obtained here:
+  http://svn.opentom.org/opentom/trunk/mkttimage/
+Its license is unspecified, but it was written by Harold Welte.
+It requires the md5 and blowfish code in lib/.
+
+ttimgextract.c was obtained here:
+  http://svn.opentom.org/opentom/trunk/ttimgextract/
+Its license is GPL.
