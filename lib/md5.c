@@ -20,15 +20,16 @@
    with Sun's original "cc". */
 
 #include <string.h>		 /* for memcpy() */
+#include <endian.h>		 /* for byte order */
 #include "md5.h"
 
-#ifndef HIGHFIRST
-#define byteReverse(buf, len)	/* Nothing */
-#else
+static inline void MD5Transform();
+
+#if BYTE_ORDER == BIG_ENDIAN
 /*
  * Note: this code is harmless on little-endian machines.
  */
-void byteReverse(buf, longs)
+static inline void byteReverse(buf, longs)
     uint8_t *buf; uint32_t longs;
 {
     uint32_t t;
@@ -39,6 +40,8 @@ void byteReverse(buf, longs)
 	buf += 4;
     } while (--longs);
 }
+#else
+#define byteReverse(buf, len)   /* Nothing */
 #endif
 
 /*
@@ -170,7 +173,7 @@ void MD5Final(digest, ctx)
  * reflect the addition of 16 longwords of new data.  MD5Update blocks
  * the data and converts bytes into longwords for this routine.
  */
-void MD5Transform(buf, in)
+static inline void MD5Transform(buf, in)
     uint32_t buf[4]; uint32_t in[16];
 {
     register uint32_t a, b, c, d;

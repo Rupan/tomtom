@@ -17,11 +17,6 @@
     order.  */
 
 #include <inttypes.h>
-#include <endian.h>
-
-#if BYTE_ORDER == BIG_ENDIAN
-#define HIGHFIRST
-#endif
 
 struct MD5Context {
         uint32_t buf[4];
@@ -32,15 +27,10 @@ struct MD5Context {
 extern void MD5Init();
 extern void MD5Update();
 extern void MD5Final();
-extern void MD5Transform();
 
 /*
  * This is needed to make RSAREF happy on some MS-DOS compilers.
  */
 typedef struct MD5Context MD5_CTX;
-
-/*  Define CHECK_HARDWARE_PROPERTIES to have main,c verify
-    byte order and uint32_t settings.  */
-#define CHECK_HARDWARE_PROPERTIES
 
 #endif /* !MD5_H */
